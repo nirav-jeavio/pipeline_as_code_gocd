@@ -1,0 +1,28 @@
+format_version: 3
+pipelines:
+  test:
+    group: defaultGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git:
+        git: https://github.com/gocd-demo/sample-k8s-workflow
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - stagetest:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          jobtest:
+            timeout: 0
+            tasks:
+            - exec:
+                command: ls
+                run_if: passed
